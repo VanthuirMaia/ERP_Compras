@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+
+  <!-- Alert -->
+  <div class="alert alert-info alert-dismissible fade show" role="alert">
+    <strong>Bem-vindo!</strong> Este é o sistema de compras Miroute.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
+  <!-- Cards -->
+  <div class="row mb-4">
+    <div class="col-lg-3 col-6">
+      <div class="small-box bg-primary">
+        <div class="inner">
+          <h3>15</h3>
+          <p>Solicitações Pendentes</p>
+        </div>
+        <div class="icon">
+          <i class="fas fa-shopping-cart"></i>
+        </div>
+        <a href="{% url 'solicitacoes:index' %}" class="small-box-footer">
+          Ver Solicitações <i class="fas fa-arrow-circle-right"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-6">
+      <div class="small-box bg-success">
+        <div class="inner">
+          <h3>8</h3>
+          <p>Pedidos Aprovados</p>
+        </div>
+        <div class="icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <a href="#" class="small-box-footer">
+          Ver Pedidos <i class="fas fa-arrow-circle-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabela de exemplo -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Solicitações Recentes</h3>
+    </div>
+    <div class="card-body table-responsive p-0" style="max-height: 300px;">
+      <table class="table table-head-fixed text-nowrap">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Solicitante</th>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>101</td>
+            <td>Maria Silva</td>
+            <td>Leite Integral</td>
+            <td>50</td>
+            <td><span class="badge bg-warning">Pendente</span></td>
+          </tr>
+          <tr>
+            <td>102</td>
+            <td>João Souza</td>
+            <td>Queijo Minas</td>
+            <td>20</td>
+            <td><span class="badge bg-success">Aprovado</span></td>
+          </tr>
+          <tr>
+            <td>103</td>
+            <td>Ana Costa</td>
+            <td>Manteiga</td>
+            <td>10</td>
+            <td><span class="badge bg-danger">Rejeitado</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
