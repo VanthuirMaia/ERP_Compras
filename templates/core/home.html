@@ -5,20 +5,12 @@
 {% block content %}
 <div class="container-fluid">
 
-  <!-- Alert -->
-  <div class="alert alert-info alert-dismissible fade show" role="alert">
-    <strong>Bem-vindo!</strong> Este é o ERP Sistema de compras.
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-
   <!-- Cards -->
   <div class="row mb-4">
     <div class="col-lg-3 col-6">
       <div class="small-box bg-primary">
         <div class="inner">
-          <h3>15</h3>
+          <h3>{{ total_pendentes }}</h3>
           <p>Solicitações Pendentes</p>
         </div>
         <div class="icon">
@@ -33,7 +25,7 @@
     <div class="col-lg-3 col-6">
       <div class="small-box bg-success">
         <div class="inner">
-          <h3>8</h3>
+          <h3>{{ total_aprovados }}</h3>
           <p>Pedidos Aprovados</p>
         </div>
         <div class="icon">
@@ -46,7 +38,7 @@
     </div>
   </div>
 
-  <!-- Tabela de exemplo -->
+  <!-- Tabela de Solicitações Recentes -->
   <div class="card">
     <div class="card-header">
       <h3 class="card-title">Solicitações Recentes</h3>
@@ -59,31 +51,33 @@
             <th>Solicitante</th>
             <th>Produto</th>
             <th>Quantidade</th>
-            <th>Status</th>
           </tr>
         </thead>
         <tbody>
+          {% for sol in solicitacoes_recentes %}
           <tr>
-            <td>101</td>
-            <td>Maria Silva</td>
-            <td>Leite Integral</td>
-            <td>50</td>
-            <td><span class="badge bg-warning">Pendente</span></td>
+            <td>{{ sol.id }}</td>
+            <td>{{ sol.solicitante_nome }}</td>
+            <td>
+              {% if sol.itens.all %}
+                {{ sol.itens.all.0.descricao }}
+              {% else %}
+                -
+              {% endif %}
+            </td>
+            <td>
+              {% if sol.itens.all %}
+                {{ sol.itens.all.0.quantidade }}
+              {% else %}
+                -
+              {% endif %}
+            </td>
           </tr>
+          {% empty %}
           <tr>
-            <td>102</td>
-            <td>João Souza</td>
-            <td>Queijo Minas</td>
-            <td>20</td>
-            <td><span class="badge bg-success">Aprovado</span></td>
+            <td colspan="4">Nenhuma solicitação encontrada.</td>
           </tr>
-          <tr>
-            <td>103</td>
-            <td>Ana Costa</td>
-            <td>Manteiga</td>
-            <td>10</td>
-            <td><span class="badge bg-danger">Rejeitado</span></td>
-          </tr>
+          {% endfor %}
         </tbody>
       </table>
     </div>
