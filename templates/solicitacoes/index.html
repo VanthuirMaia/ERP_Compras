@@ -3,5 +3,96 @@
 {% block title %}Solicitações{% endblock %}
 
 {% block content %}
-<h1>Lista de Solicitações</h1>
+<div class="container-fluid">
+
+  <!-- Cards com estatísticas simples -->
+  <div class="row mb-4">
+    <div class="col-lg-3 col-6">
+      <div class="small-box bg-primary">
+        <div class="inner">
+          <h3>{{ total_pendentes }}</h3>
+          <p>Solicitações Pendentes</p>
+        </div>
+        <div class="icon">
+          <i class="fas fa-shopping-cart"></i>
+        </div>
+        <a href="#" class="small-box-footer">
+          Ver Pendentes <i class="fas fa-arrow-circle-right"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-6">
+      <div class="small-box bg-success">
+        <div class="inner">
+          <h3>{{ total_aprovados }}</h3>
+          <p>Solicitações Aprovadas</p>
+        </div>
+        <div class="icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <a href="#" class="small-box-footer">
+          Ver Aprovados <i class="fas fa-arrow-circle-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Adicionar solicitação -->
+  <div class="mb-3">
+    <a href="{% url 'solicitacoes:criar_solicitacao' %}" class="btn btn-success">
+        <i class="fas fa-plus"></i> Nova Solicitação
+    </a>
+  </div>
+
+  <!-- Tabela com lista das solicitações -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Lista de Solicitações</h3>
+    </div>
+    <div class="card-body table-responsive p-0" style="max-height: 400px;">
+      <table class="table table-head-fixed text-nowrap table-hover">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Solicitante</th>
+            <th>Data</th>
+            <th>Aplicação</th>  <!-- NOVA COLUNA -->
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for sol in solicitacoes %}
+          <tr style="cursor: pointer;" onclick="window.location='{% url 'solicitacoes:detalhar_solicitacao' sol.id %}'">
+            <td>{{ sol.id }}</td>
+            <td>{{ sol.solicitante_nome }}</td>
+            <td>{{ sol.data_solicitacao|date:"d/m/Y" }}</td>
+            <td>
+              {% if sol.itens.all %}
+                {{ sol.itens.all.0.aplicacao }}
+              {% else %}
+                -
+              {% endif %}
+            </td>
+            <td>
+              {% if sol.status == 'pendente' %}
+                <span class="badge bg-warning">Pendente</span>
+              {% elif sol.status == 'aprovado' %}
+                <span class="badge bg-success">Aprovado</span>
+              {% else %}
+                <span class="badge bg-danger">Rejeitado</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5">Nenhuma solicitação encontrada.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
 {% endblock %}

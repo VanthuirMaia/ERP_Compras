@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Solicitação #{{ solicitacao.id }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <h1>Editar Solicitação #{{ solicitacao.id }}</h1>
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="solicitante_nome" class="form-label">Solicitante</label>
+      <input type="text" class="form-control" id="solicitante_nome" name="solicitante_nome" value="{{ solicitacao.solicitante_nome }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="programar_para" class="form-label">Programar Para</label>
+      <input type="date" class="form-control" id="programar_para" name="programar_para" value="{{ solicitacao.programar_para|date:'Y-m-d' }}">
+    </div>
+
+    <h3>Itens Existentes</h3>
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Aplicação</th>
+          <th>Descrição</th>
+          <th>Especificação</th>
+          <th>Quantidade</th>
+          <th>Remover</th>
+        </tr>
+      </thead>
+        <tbody>
+        {% for item in itens %}
+        <tr>
+            <td>{{ item.item }}</td>
+            <input type="hidden" name="item_id" value="{{ item.id }}">
+            <td><input type="text" name="aplicacao" class="form-control" value="{{ item.aplicacao }}"></td>
+            <td><input type="text" name="descricao" class="form-control" value="{{ item.descricao }}"></td>
+            <td><input type="text" name="especificacao" class="form-control" value="{{ item.especificacao }}"></td>
+            <td><input type="number" name="quantidade" class="form-control" value="{{ item.quantidade }}"></td>
+            <td>
+            <!-- Botão para remover item -->
+            <form method="post" action="{% url 'solicitacoes:remover_item' item.id %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-sm">Remover</button>
+            </form>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+
+    <input type="hidden" name="total_itens_existentes" value="{{ itens|length }}">
+
+    <h3>Adicionar Novos Itens</h3>
+    <div id="novos-itens-container">
+        <div class="row mb-3 novo-item">
+        <div class="col"><input type="text" name="aplicacao" class="form-control" placeholder="Aplicação"></div>
+        <div class="col"><input type="text" name="descricao" class="form-control" placeholder="Descrição"></div>
+        <div class="col"><input type="text" name="especificacao" class="form-control" placeholder="Especificação"></div>
+        <div class="col"><input type="number" name="quantidade" class="form-control" placeholder="Quantidade"></div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+    <a href="{% url 'solicitacoes:detalhar_solicitacao' solicitacao.id %}" class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+{% endblock %}

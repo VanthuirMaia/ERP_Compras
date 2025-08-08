@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Excluir Solicitação #{{ solicitacao.id }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <h1>Excluir Solicitação #{{ solicitacao.id }}</h1>
+  <p>Tem certeza que deseja excluir esta solicitação?</p>
+  
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Excluir</button>
+    <a href="{% url 'solicitacoes:index' %}" class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+{% endblock %}
