@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}Pedidos{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+
+  <!-- Cards com estatísticas simples -->
+  <div class="row mb-4">
+    <div class="col-lg-3 col-6">
+      <div class="small-box bg-primary">
+        <div class="inner">
+          <h3>{{ total_em_aberto }}</h3>
+          <p>Pedidos em Aberto</p>
+        </div>
+        <div class="icon">
+          <i class="fas fa-file-invoice"></i>
+        </div>
+        <a href="#" class="small-box-footer">
+          Ver Abertos <i class="fas fa-arrow-circle-right"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-6">
+      <div class="small-box bg-success">
+        <div class="inner">
+          <h3>{{ total_concluidos }}</h3>
+          <p>Pedidos Concluídos</p>
+        </div>
+        <div class="icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <a href="#" class="small-box-footer">
+          Ver Concluídos <i class="fas fa-arrow-circle-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Adicionar pedido -->
+  {% comment %} <div class="mb-3">
+    <a href="{% url 'pedidos:criar_pedido' %}" class="btn btn-success">
+        <i class="fas fa-plus"></i> Novo Pedido
+    </a>
+  </div> {% endcomment %}
+
+  <!-- Tabela com lista dos pedidos -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Lista de Pedidos</h3>
+    </div>
+    <div class="card-body table-responsive p-0" style="max-height: 400px;">
+      <table class="table table-head-fixed text-nowrap table-hover">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Fornecedor</th>
+            <th>Data</th>
+            <th>Valor Total</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for pedido in pedidos %}
+          <tr style="cursor: pointer;" onclick="window.location='{% url 'pedidos:detalhar_pedido' pedido.id %}'">
+            <td>{{ pedido.id }}</td>
+            <td>{{ pedido.fornecedor.nome }}</td>
+            <td>{{ pedido.data_pedido|date:"d/m/Y" }}</td>
+            <td>R$ {{ pedido.valor_total|floatformat:2 }}</td>
+            <td>
+              {% if pedido.status == 'aberto' %}
+                <span class="badge bg-warning">Aberto</span>
+              {% elif pedido.status == 'concluido' %}
+                <span class="badge bg-success">Concluído</span>
+              {% else %}
+                <span class="badge bg-secondary">Outro</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5">Nenhum pedido encontrado.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

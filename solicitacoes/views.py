@@ -7,7 +7,11 @@ from .models import Solicitacao, ItemSolicitacao
 
 def index(request):
     solicitacoes = Solicitacao.objects.all().order_by('-id')
-    return render(request, 'solicitacoes/index.html', {'solicitacoes': solicitacoes})
+    return render(request, 'solicitacoes/index.html', {
+        'solicitacoes': solicitacoes,
+        'page_title': 'Solicitações'
+    })
+
 
 # Criar SOLICITAÇÂO
 def criar_solicitacao(request):

@@ -5,5 +5,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')), # Rota principal (Home)
     path('solicitacoes/', include('solicitacoes.urls', namespace='solicitacoes')), # Rotas para solicitações
+    path('pedidos/', include('pedidos.urls', namespace='pedidos')), # Rotas para pedidos
     
 ]

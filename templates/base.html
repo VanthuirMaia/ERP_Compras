@@ -7,8 +7,14 @@
     <title>{% block title %}ERP Sistema de Compras{% endblock %}</title>
 
     <!-- CSS AdminLTE e FontAwesome -->
-    <link rel="stylesheet" href="{% static 'adminlte/dist/css/adminlte.min.css' %}">
-    <link rel="stylesheet" href="{% static 'adminlte/plugins/fontawesome-free/css/all.min.css' %}">
+    <link
+      rel="stylesheet"
+      href="{% static 'adminlte/dist/css/adminlte.min.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'adminlte/plugins/fontawesome-free/css/all.min.css' %}"
+    />
   </head>
   <body class="hold-transition sidebar-mini">
     <div class="wrapper">
@@ -22,7 +28,9 @@
             </a>
           </li>
           <li class="nav-item d-none d-sm-inline-block">
-            <a href="{% url 'core:home' %}" class="nav-link">Home</a>
+            <span class="nav-link font-weight-bold">
+              {{ page_title|default:"Home" }}
+            </span>
           </li>
         </ul>
       </nav>
@@ -31,7 +39,9 @@
       <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Logo / Nome -->
         <a href="{% url 'core:home' %}" class="brand-link">
-          <span class="brand-text font-weight-light">ERP Sistema de Compras</span>
+          <span class="brand-text font-weight-light"
+            >ERP Sistema de Compras</span
+          >
         </a>
 
         <!-- Sidebar Menu -->
@@ -49,6 +59,13 @@
                 <a href="{% url 'solicitacoes:index' %}" class="nav-link">
                   <i class="nav-icon fas fa-shopping-cart"></i>
                   <p>Solicitações</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{% url 'pedidos:index' %}" class="nav-link">
+                  <i class="nav-icon fas fa-file-invoice"></i>
+                  <p>Pedidos</p>
                 </a>
               </li>
 
