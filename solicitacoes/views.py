@@ -128,8 +128,6 @@ def editar_solicitacao(request, pk):
 
 
 # Excluir SOLICITAÇÂO
-from django.shortcuts import redirect, get_object_or_404
-
 def excluir_solicitacao(request, pk):
     solicitacao = get_object_or_404(Solicitacao, pk=pk)
     if request.method == 'POST':

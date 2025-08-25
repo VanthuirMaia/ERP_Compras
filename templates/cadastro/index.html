@@ -17,7 +17,9 @@
       <h3 class="card-title">Lista de Fornecedores</h3>
     </div>
     <div class="card-body table-responsive p-0" style="max-height: 400px">
-      <table class="table table-head-fixed text-nowrap table-hover">
+      <table
+        class="table table-head-fixed text-nowrap table-hover align-middle"
+      >
         <thead>
           <tr>
             <th>ID</th>
@@ -28,8 +30,11 @@
           </tr>
         </thead>
         <tbody>
-          {% for f in fornecedores %}
-          <tr>
+          {% for f in fornecedores %} {% url 'cadastro:detalhar_fornecedor' pk=f.id as detalhe_url %}
+          <tr
+            style="cursor: pointer"
+            onclick="window.location='{{ detalhe_url }}'"
+          >
             <td>{{ f.id }}</td>
             <td>{{ f.nome }}</td>
             <td>{{ f.cnpj_cpf|default:"-" }}</td>

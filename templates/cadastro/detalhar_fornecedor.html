@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}{{ page_title }}{% endblock %}
+{% block content %}
+<div class="container mt-3">
+
+  <div class="d-flex justify-content-between align-items-center">
+  <h3>{{ fornecedor.nome }}</h3>
+  <div>
+    <a href="{% url 'cadastro:editar_fornecedor' pk=fornecedor.id %}" class="btn btn-warning">
+      <i class="fas fa-edit"></i> Editar
+    </a>
+    <a href="{% url 'cadastro:excluir_fornecedor' pk=fornecedor.id %}" class="btn btn-danger">
+      <i class="fas fa-trash-alt"></i> Excluir
+    </a>
+  </div>
+</div>
+
+
+  <h5>Detalhes do Fornecedor</h5>
+  <hr>
+
+  <div class="row">
+    <div class="col-md-6">
+      <p><strong>CNPJ/CPF:</strong> {{ fornecedor.cnpj_cpf|default:"-" }}</p>
+      <p><strong>Cidade:</strong> {{ fornecedor.cidade|default:"-" }}</p>
+      <p><strong>Telefone:</strong> {{ fornecedor.telefone|default:"-" }}</p>
+      <p><strong>E-mail:</strong> {{ fornecedor.email|default:"-" }}</p>
+    </div>
+    <div class="col-md-6">
+      <p><strong>Endereço:</strong> {{ fornecedor.endereco|default:"-" }}</p>
+      <p><strong>ID:</strong> {{ fornecedor.id }}</p>
+    </div>
+  </div>
+
+  <a href="{% url 'cadastro:index' %}" class="btn btn-secondary mt-2">Voltar</a>
+</div>
+{% endblock %}
