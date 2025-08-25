@@ -59,6 +59,7 @@ def detalhar_solicitacao(request, pk):
     return render(request, 'solicitacoes/detalhar_solicitacao.html', {
         'solicitacao': solicitacao,
         'itens': itens,
+        'page_title': f'Solicitação #{solicitacao.id}'
     })
 
 # Editar SOLICITAÇÂO
@@ -124,6 +125,7 @@ def editar_solicitacao(request, pk):
     return render(request, 'solicitacoes/editar_solicitacao.html', {
         'solicitacao': solicitacao,
         'itens': itens,
+        'page_title': f'Editar Solicitação #{solicitacao.id}'
     })
 
 

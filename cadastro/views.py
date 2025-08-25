@@ -12,7 +12,7 @@ def index(request):
 def detalhar_fornecedor(request, pk):
     fornecedor = get_object_or_404(Fornecedor, pk=pk)
     return render(request, "cadastro/detalhar_fornecedor.html", {
-        "page_title": f"Fornecedor #{fornecedor.id}",
+        "page_title": f"Fornecedor #{fornecedor.nome}",
         "fornecedor": fornecedor
     })
 
@@ -57,7 +57,7 @@ def editar_fornecedor(request, pk):
         if errors:
             # Re-render com erros e valores preenchidos
             return render(request, "cadastro/editar_fornecedor.html", {
-                "page_title": f"Editar Fornecedor #{fornecedor.id}",
+                "page_title": f"Editar Fornecedor #{fornecedor.nome}",
                 "errors": errors, "data": data, "fornecedor": fornecedor
             })
 
@@ -78,7 +78,7 @@ def editar_fornecedor(request, pk):
         "email": fornecedor.email or "",
     }
     return render(request, "cadastro/editar_fornecedor.html", {
-        "page_title": f"Editar Fornecedor #{fornecedor.id}",
+        "page_title": f"Editar Fornecedor #{fornecedor.nome}",
         "data": data, "fornecedor": fornecedor
     })
 

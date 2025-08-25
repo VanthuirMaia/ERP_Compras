@@ -1,42 +1,29 @@
-{% extends 'base.html' %} {% block title %}Pedido {{ pedido.numero }}{% endblock
-title %} {% block content %}
+{% extends 'base.html' %} {% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+
 <div class="container mt-3">
   <div class="d-flex justify-content-between align-items-center">
     <h3>Pedido {{ pedido.numero }}</h3>
     <div>
-      <a
-        class="btn btn-warning"
-        href="{% url 'pedidos:editar_itens_pedido' pk=pedido.id %}"
-      >
+      <a class="btn btn-warning" href="#">
         <i class="fas fa-list"></i> Editar Itens
       </a>
       <a
-        class="btn btn-secondary"
-        href="{% url 'pedidos:pedido_pdf' pk=pedido.id %}"
+        href="{% url 'pedidos:exportar_pedido_pdf' pedido.pk %}"
+        target="_blank"
+        class="btn btn-danger"
       >
-        <i class="fas fa-file-pdf"></i> PDF
-      </a>
-      <a
-        class="btn btn-success"
-        href="{% url 'pedidos:aprovar_comprador' pk=pedido.id %}"
-      >
-        Assinar Comprador
-      </a>
-      <a
-        class="btn btn-info"
-        href="{% url 'pedidos:aprovar_gerencia' pk=pedido.id %}"
-      >
-        Aprovar Gerência
+        <i class="fas fa-file-pdf"></i> Exportar PDF
       </a>
     </div>
   </div>
 
-  <h5>Detalhes do Pedido</h5>
   <hr />
 
   <div class="row">
     <div class="col-md-6">
-      <h6 class="mb-2">Fornecedor</h6>
+      <h6>Fornecedor</h6>
       <p>
         <strong>{{ pedido.fornecedor_nome }}</strong><br />
         CNPJ/CPF: {{ pedido.fornecedor_cnpj_cpf }}<br />
@@ -45,19 +32,17 @@ title %} {% block content %}
       </p>
     </div>
     <div class="col-md-6">
-      <h6 class="mb-2">Dados</h6>
+      <h6>Dados</h6>
       <p>
-        Nº: {{ pedido.numero }}<br />
         Emissão: {{ pedido.data_emissao|date:"d/m/Y" }}<br />
-        Entrega: {{ pedido.local_entrega }} / Prazo: {{ pedido.prazo_entrega
-        }}<br />
+        Entrega: {{ pedido.local_entrega }} / Prazo: {{ pedido.prazo_entrega}}<br />
         Centro de Custo: {{ pedido.centro_custo }}<br />
         Condição de Pagamento: {{ pedido.condicao_pagamento }}
       </p>
     </div>
   </div>
 
-  <h5 class="mt-3">Itens</h5>
+  <h6 class="mt-3">Itens</h6>
   <div class="table-responsive">
     <table class="table table-hover">
       <thead>
@@ -95,24 +80,6 @@ title %} {% block content %}
     </table>
   </div>
 
-  {% if pedido.observacoes %}
-  <h5>Observações</h5>
-  <p>{{ pedido.observacoes }}</p>
-  {% endif %}
-
-  <h5>Assinaturas</h5>
-  <p>
-    Comprador: {% if pedido.assinatura_comprador %} {{
-    pedido.assinatura_comprador|date:"d/m/Y H:i" }} {% else %}
-    <em>Pendente</em>
-    {% endif %}
-    <br />
-    Aprovação (Gerência/Diretoria): {% if pedido.assinatura_aprovacao %} {{
-    pedido.assinatura_aprovacao|date:"d/m/Y H:i" }} {% else %}
-    <em>Pendente</em>
-    {% endif %}
-  </p>
-
   <a href="{% url 'pedidos:index' %}" class="btn btn-secondary mt-2">Voltar</a>
 </div>
-{% endblock content %}
+{% endblock %}

@@ -21,14 +21,16 @@
 
   <div class="row">
     <div class="col-md-6">
-      <p><strong>CNPJ/CPF:</strong> {{ fornecedor.cnpj_cpf|default:"-" }}</p>
-      <p><strong>Cidade:</strong> {{ fornecedor.cidade|default:"-" }}</p>
-      <p><strong>Telefone:</strong> {{ fornecedor.telefone|default:"-" }}</p>
+      <p><strong>ID:</strong> {{ fornecedor.id }}</p>
+      <p><strong>Endereço:</strong> {{ fornecedor.endereco|default:"-" }}</p>
       <p><strong>E-mail:</strong> {{ fornecedor.email|default:"-" }}</p>
     </div>
     <div class="col-md-6">
-      <p><strong>Endereço:</strong> {{ fornecedor.endereco|default:"-" }}</p>
-      <p><strong>ID:</strong> {{ fornecedor.id }}</p>
+      <p><strong>CNPJ/CPF:</strong> {{ fornecedor.cnpj_cpf|default:"-" }}</p>
+      <p><strong>Cidade:</strong> {{ fornecedor.cidade|default:"-" }}</p>
+
+
+      <p><strong>Telefone:</strong> {{ fornecedor.telefone|default:"-" }}</p>
     </div>
   </div>
 

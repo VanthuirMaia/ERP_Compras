@@ -38,13 +38,6 @@
     </div>
   </div>
 
-  <!-- Adicionar pedido -->
-  <div class="mb-3">
-    <a href="{% url 'pedidos:criar_pedido' %}" class="btn btn-success">
-        <i class="fas fa-plus"></i> Novo Pedido
-    </a>
-  </div>
-
   <!-- Tabela com lista dos pedidos -->
   <div class="card">
     <div class="card-header">
@@ -64,7 +57,7 @@
         </thead>
         <tbody>
           {% for pedido in pedidos %}
-          {% url 'pedidos:detalhar_pedido' pk=pedido.id as detalhe_url %}
+          {% url 'pedidos:detalhar_pedido' pk=pedido.pk as detalhe_url %}
           <tr style="cursor: pointer;" onclick="window.location='{{ detalhe_url }}'">
             <td>{{ pedido.id }}</td>
             <td>{{ pedido.numero }}</td>
