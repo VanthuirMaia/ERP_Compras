@@ -10,7 +10,7 @@
     <div class="col-lg-3 col-6">
       <div class="small-box bg-primary">
         <div class="inner">
-          <h3>{{ total_em_aberto }}</h3>
+          <h3>{{ total_em_aberto|default:0 }}</h3>
           <p>Pedidos em Aberto</p>
         </div>
         <div class="icon">
@@ -25,7 +25,7 @@
     <div class="col-lg-3 col-6">
       <div class="small-box bg-success">
         <div class="inner">
-          <h3>{{ total_concluidos }}</h3>
+          <h3>{{ total_concluidos|default:0 }}</h3>
           <p>Pedidos Concluídos</p>
         </div>
         <div class="icon">
@@ -39,11 +39,11 @@
   </div>
 
   <!-- Adicionar pedido -->
-  {% comment %} <div class="mb-3">
+  <div class="mb-3">
     <a href="{% url 'pedidos:criar_pedido' %}" class="btn btn-success">
         <i class="fas fa-plus"></i> Novo Pedido
     </a>
-  </div> {% endcomment %}
+  </div>
 
   <!-- Tabela com lista dos pedidos -->
   <div class="card">
@@ -55,6 +55,7 @@
         <thead>
           <tr>
             <th>ID</th>
+            <th>Número</th>
             <th>Fornecedor</th>
             <th>Data</th>
             <th>Valor Total</th>
@@ -63,24 +64,26 @@
         </thead>
         <tbody>
           {% for pedido in pedidos %}
-          <tr style="cursor: pointer;" onclick="window.location='{% url 'pedidos:detalhar_pedido' pedido.id %}'">
+          {% url 'pedidos:detalhar_pedido' pk=pedido.id as detalhe_url %}
+          <tr style="cursor: pointer;" onclick="window.location='{{ detalhe_url }}'">
             <td>{{ pedido.id }}</td>
-            <td>{{ pedido.fornecedor.nome }}</td>
-            <td>{{ pedido.data_pedido|date:"d/m/Y" }}</td>
+            <td>{{ pedido.numero }}</td>
+            <td>{{ pedido.fornecedor_nome }}</td>
+            <td>{{ pedido.data_emissao|date:"d/m/Y" }}</td>
             <td>R$ {{ pedido.valor_total|floatformat:2 }}</td>
             <td>
-              {% if pedido.status == 'aberto' %}
-                <span class="badge bg-warning">Aberto</span>
-              {% elif pedido.status == 'concluido' %}
+              {% if pedido.assinatura_comprador and pedido.assinatura_aprovacao %}
                 <span class="badge bg-success">Concluído</span>
+              {% elif pedido.assinatura_comprador %}
+                <span class="badge bg-info">Aguardando Gerência</span>
               {% else %}
-                <span class="badge bg-secondary">Outro</span>
+                <span class="badge bg-warning">Em Aberto</span>
               {% endif %}
             </td>
           </tr>
           {% empty %}
           <tr>
-            <td colspan="5">Nenhum pedido encontrado.</td>
+            <td colspan="6">Nenhum pedido encontrado.</td>
           </tr>
           {% endfor %}
         </tbody>
