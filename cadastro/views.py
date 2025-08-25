@@ -3,7 +3,7 @@ from django.contrib import messages
 from .models import Fornecedor
 
 def index(request):
-    fornecedores = Fornecedor.objects.all()
+    fornecedores = Fornecedor.objects.all().order_by("-id")
     return render(request, "cadastro/index.html", {
         "page_title": "Fornecedores",
         "fornecedores": fornecedores
