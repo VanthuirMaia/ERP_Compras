@@ -1,5 +1,7 @@
 # 🛒 ERP Compras
 
+# Teste
+
 [![Python Version](https://img.shields.io/badge/python-3.12-blue.svg)](https://python.org)
 [![Django Version](https://img.shields.io/badge/django-5.2-green.svg)](https://djangoproject.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
