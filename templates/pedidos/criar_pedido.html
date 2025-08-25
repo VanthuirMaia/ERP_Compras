@@ -1,13 +1,54 @@
-{% extends 'base.html' %}
+<div class="card mb-3">
+  <div class="card-header"><strong>Fornecedor</strong></div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-8 mb-2">
+        <label>Selecionar Fornecedor</label>
+        <select name="fornecedor_id" id="fornecedor_id" class="form-control">
+          <option value="">— Selecione —</option>
+          {% for f in fornecedores %}
+            <option value="{{ f.id }}"
+              {% if data.fornecedor_id|stringformat:"s" == f.id|stringformat:"s" %}selected{% endif %}>
+              {{ f.nome }} {% if f.cnpj_cpf %}— {{ f.cnpj_cpf }}{% endif %}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-4 mb-2">
+        <label>Número *</label>
+        <input type="text" name="numero" class="form-control" value="{{ data.numero|default:'' }}">
+      </div>
+    </div>
 
-{% block title %}Novo Pedido{% endblock %}
-
-{% block content %}
-
-<div class="container mt-3">
-  <h3>Novo Pedido</h3>
-  <p>Formulário de criação de pedido será implementado aqui.</p>
-  <a href="{% url 'pedidos:index' %}" class="btn btn-secondary">Voltar</a>
+    <!-- Campos livres (fallback) caso não selecione fornecedor -->
+    <div class="alert alert-light border mt-2 mb-0">
+      <small class="text-muted d-block mb-2">
+        Se não houver fornecedor cadastrado, preencha manualmente:
+      </small>
+      <div class="row">
+        <div class="col-md-6 mb-2">
+          <label>Nome</label>
+          <input type="text" name="fornecedor_nome" class="form-control" value="{{ data.fornecedor_nome|default:'' }}">
+        </div>
+        <div class="col-md-6 mb-2">
+          <label>CNPJ/CPF</label>
+          <input type="text" name="fornecedor_cnpj_cpf" class="form-control" value="{{ data.fornecedor_cnpj_cpf|default:'' }}">
+        </div>
+      </div>
+      <div class="mb-2">
+        <label>Endereço</label>
+        <input type="text" name="fornecedor_endereco" class="form-control" value="{{ data.fornecedor_endereco|default:'' }}">
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-2">
+          <label>Cidade</label>
+          <input type="text" name="fornecedor_cidade" class="form-control" value="{{ data.fornecedor_cidade|default:'' }}">
+        </div>
+        <div class="col-md-6 mb-2">
+          <label>Telefone</label>
+          <input type="text" name="fornecedor_telefone" class="form-control" value="{{ data.fornecedor_telefone|default:'' }}">
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-
-{% endblock %}

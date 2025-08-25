@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Novo Fornecedor{% endblock %}
+
+{% block content %}
+
+<div class="container mt-3">
+  <h3>Novo Fornecedor</h3>
+
+  {% if errors %}
+    <div class="alert alert-danger">
+      <ul class="mb-0">{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul>
+    </div>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6 mb-2">
+            <label>Nome *</label>
+            <input type="text" name="nome" class="form-control" value="{{ data.nome|default:'' }}">
+          </div>
+          <div class="col-md-6 mb-2">
+            <label>CNPJ/CPF</label>
+            <input type="text" name="cnpj_cpf" class="form-control" value="{{ data.cnpj_cpf|default:'' }}">
+          </div>
+        </div>
+        <div class="mb-2">
+          <label>Endereço</label>
+          <input type="text" name="endereco" class="form-control" value="{{ data.endereco|default:'' }}">
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-2">
+            <label>Cidade</label>
+            <input type="text" name="cidade" class="form-control" value="{{ data.cidade|default:'' }}">
+          </div>
+          <div class="col-md-6 mb-2">
+            <label>Telefone</label>
+            <input type="text" name="telefone" class="form-control" value="{{ data.telefone|default:'' }}">
+          </div>
+        </div>
+        <div class="mb-2">
+          <label>E-mail</label>
+          <input type="email" name="email" class="form-control" value="{{ data.email|default:'' }}">
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary"><i class="fas fa-save"></i> Salvar</button>
+    <a href="{% url 'cadastro:index' %}" class="btn btn-secondary">Voltar</a>
+  </form>
+</div>
+
+{% endblock %}
