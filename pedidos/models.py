@@ -1,10 +1,14 @@
 from django.db import models
 from django.utils import timezone
-from solicitacoes.models import Solicitacao  # importa o app de solicitações
 
 class Pedido(models.Model):
-    numero = models.CharField(max_length=20, unique=True, editable=False)
-    data_emissao = models.DateField(auto_now_add=True)
+    STATUS_CHOICES = [
+        ("em_aberto", "Em Aberto"),
+        ("aguardando_aprovacao", "Aguardando Aprovação"),
+        ("aprovado", "Aprovado"),
+        ("finalizado", "Finalizado"),
+        ("cancelado", "Cancelado"),
+    ]
 
     solicitacao = models.ForeignKey(
         "solicitacoes.Solicitacao",
@@ -13,6 +17,7 @@ class Pedido(models.Model):
     )
     numero = models.CharField(max_length=20, unique=True, editable=False)
     data_emissao = models.DateField(auto_now_add=True)
+
     fornecedor_nome = models.CharField(max_length=255, default='Fornecedor Não Informado')
     fornecedor_cnpj_cpf = models.CharField(max_length=20, default='00000000000000')
     fornecedor_endereco = models.CharField(max_length=255, default='Endereço Não Informado')
@@ -25,6 +30,8 @@ class Pedido(models.Model):
     condicao_pagamento = models.CharField(max_length=100, default='À vista')
     observacoes = models.TextField(blank=True, null=True)
 
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="em_aberto")
+
     assinatura_aprovacao = models.DateTimeField(null=True, blank=True)
     assinatura_comprador = models.DateTimeField(null=True, blank=True)
 
@@ -34,7 +41,6 @@ class Pedido(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.numero:
-            from django.utils import timezone
             ano = timezone.now().year
             ultimo_pedido = Pedido.objects.filter(data_emissao__year=ano).order_by("id").last()
             if ultimo_pedido:
