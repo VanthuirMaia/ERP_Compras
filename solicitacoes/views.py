@@ -3,6 +3,11 @@ from django.views.decorators.http import require_http_methods, require_POST
 from django.db import models
 from datetime import datetime
 from .models import Solicitacao, ItemSolicitacao
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+import os, base64
+from django.conf import settings
 
 
 def index(request):
@@ -144,3 +149,26 @@ def remover_item(request, item_id):
     solicitacao_id = item.solicitacao.id
     item.delete()
     return redirect('solicitacoes:editar_solicitacao', pk=solicitacao_id)
+
+def exportar_pdf(request, pk):
+    solicitacao = get_object_or_404(Solicitacao, pk=pk)
+    itens = solicitacao.itens.all()
+
+    # Converter logo em base64 (mesmo esquema do Pedido)
+    logo_file = os.path.join(settings.BASE_DIR, "static", "img", "miroute.png")
+    logo_base64 = ""
+    if os.path.exists(logo_file):
+        with open(logo_file, "rb") as img:
+            logo_base64 = base64.b64encode(img.read()).decode("utf-8")
+
+    template = get_template("solicitacoes/solicitacao_pdf.html")
+    html_content = template.render({
+        "solicitacao": solicitacao,
+        "itens": itens,
+        "logo_base64": logo_base64,
+    })
+
+    response = HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"] = f'inline; filename="solicitacao_{solicitacao.id}.pdf"'
+    pisa.CreatePDF(html_content, dest=response)
+    return response

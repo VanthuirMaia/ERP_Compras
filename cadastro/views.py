@@ -1,20 +1,33 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import User, Group
 from django.contrib import messages
 from .models import Fornecedor
 
+# Exemplo de regra de acesso (pode usar depois em Pedidos/Solicitações)
+def is_compras(user):
+    return user.groups.filter(name='Compras').exists() or user.is_superuser
+
+
+# =========================
+# FORNECEDORES
+# =========================
+
 def index(request):
     fornecedores = Fornecedor.objects.all().order_by("-id")
-    return render(request, "cadastro/index.html", {
+    return render(request, "cadastro/fornecedores/index.html", {
         "page_title": "Fornecedores",
         "fornecedores": fornecedores
     })
 
+
 def detalhar_fornecedor(request, pk):
     fornecedor = get_object_or_404(Fornecedor, pk=pk)
-    return render(request, "cadastro/detalhar_fornecedor.html", {
+    return render(request, "cadastro/fornecedores/detalhar.html", {
         "page_title": f"Fornecedor #{fornecedor.nome}",
         "fornecedor": fornecedor
     })
+
 
 def criar_fornecedor(request):
     if request.method == "POST":
@@ -30,14 +43,15 @@ def criar_fornecedor(request):
         if not data["nome"]:
             errors.append("O campo 'Nome' é obrigatório.")
         if errors:
-            return render(request, "cadastro/criar_fornecedor.html", {
+            return render(request, "cadastro/fornecedores/criar.html", {
                 "page_title": "Novo Fornecedor", "errors": errors, "data": data
             })
         Fornecedor.objects.create(**data)
         messages.success(request, "Fornecedor cadastrado com sucesso.")
         return redirect("cadastro:index")
 
-    return render(request, "cadastro/criar_fornecedor.html", {"page_title": "Novo Fornecedor"})
+    return render(request, "cadastro/fornecedores/criar.html", {"page_title": "Novo Fornecedor"})
+
 
 def editar_fornecedor(request, pk):
     fornecedor = get_object_or_404(Fornecedor, pk=pk)
@@ -55,20 +69,17 @@ def editar_fornecedor(request, pk):
         if not data["nome"]:
             errors.append("O campo 'Nome' é obrigatório.")
         if errors:
-            # Re-render com erros e valores preenchidos
-            return render(request, "cadastro/editar_fornecedor.html", {
+            return render(request, "cadastro/fornecedores/editar.html", {
                 "page_title": f"Editar Fornecedor #{fornecedor.nome}",
                 "errors": errors, "data": data, "fornecedor": fornecedor
             })
 
-        # Atualiza e salva
         for field, value in data.items():
             setattr(fornecedor, field, value)
         fornecedor.save()
         messages.success(request, "Fornecedor atualizado com sucesso.")
         return redirect("cadastro:index")
 
-    # GET: popular formulário com dados atuais
     data = {
         "nome": fornecedor.nome,
         "cnpj_cpf": fornecedor.cnpj_cpf or "",
@@ -77,15 +88,54 @@ def editar_fornecedor(request, pk):
         "telefone": fornecedor.telefone or "",
         "email": fornecedor.email or "",
     }
-    return render(request, "cadastro/editar_fornecedor.html", {
+    return render(request, "cadastro/fornecedores/editar.html", {
         "page_title": f"Editar Fornecedor #{fornecedor.nome}",
         "data": data, "fornecedor": fornecedor
     })
 
-# Excluir FORNECEDOR
+
 def excluir_fornecedor(request, pk):
     fornecedor = get_object_or_404(Fornecedor, pk=pk)
     if request.method == 'POST':
         fornecedor.delete()
         return redirect('cadastro:index')
-    return render(request, 'cadastro/excluir_fornecedor.html', {'fornecedor': fornecedor})
+    return render(request, 'cadastro/fornecedores/excluir.html', {'fornecedor': fornecedor})
+
+
+# =========================
+# USUÁRIOS
+# =========================
+
+def lista_usuarios(request):
+    usuarios = User.objects.all().order_by("id")
+    return render(request, "cadastro/usuarios/lista.html", {
+        "page_title": "Usuários",
+        "usuarios": usuarios
+    })
+
+
+def criar_usuario(request):
+    grupos = Group.objects.all()
+    if request.method == "POST":
+        nome = request.POST.get("nome")
+        email = request.POST.get("email")
+        senha = request.POST.get("senha")
+        grupo_id = request.POST.get("grupo")
+
+        user = User.objects.create_user(
+            username=email,  # username = email
+            email=email,
+            password=senha,
+            first_name=nome
+        )
+        if grupo_id:
+            grupo = Group.objects.get(id=grupo_id)
+            user.groups.add(grupo)
+
+        messages.success(request, f"Usuário {nome} criado com sucesso.")
+        return redirect("cadastro:lista_usuarios")
+
+    return render(request, "cadastro/usuarios/form.html", {
+        "page_title": "Novo Usuário",
+        "grupos": grupos
+    })

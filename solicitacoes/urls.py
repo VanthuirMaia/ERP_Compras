@@ -10,5 +10,7 @@ urlpatterns = [
     path('<int:pk>/editar/', views.editar_solicitacao, name='editar_solicitacao'), # Editar
     path('<int:pk>/excluir/', views.excluir_solicitacao, name='excluir_solicitacao'), # Excluir
     path('item/<int:item_id>/remover/', views.remover_item, name='remover_item'),
+    path("<int:pk>/pdf/", views.exportar_pdf, name="exportar_pdf"),  # rota do PDF
+
 
 ]

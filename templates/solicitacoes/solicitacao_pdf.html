@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @page {
+            size: A4 landscape;
+            margin: 12mm;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            margin: 5px;
+        }
+        .header {
+            width: 100%;
+            border-bottom: 1px solid #000;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+        }
+        .header table { width: 100%; }
+        .header img { max-width: 60px; height: auto; }
+        .header h1 { margin: 0; font-size: 14px; }
+        .header h2 { margin: 0; font-size: 12px; font-weight: normal; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;  /* força todas as colunas a respeitarem width */
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 4px;
+            font-size: 9px;
+            word-wrap: break-word;
+        }
+        th { background-color: #eee; }
+        .assinaturas { margin-top: 20px; width: 100%; }
+        .assinaturas td { padding: 15px; text-align: center; font-size: 10px; }
+        .assinaturas .line { border-top: 1px solid #000; margin-top: 25px; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;  /* força uso das larguras */
+        }
+
+    </style>
+</head>
+<body>
+<!-- Cabeçalho -->
+    <div class="header">
+        <table style="width: 100%;">
+            <tr>
+                <!-- Logo -->
+                <td style="width: 33%; text-align: left; border: none; vertical-align: middle;">
+                    <img src="data:image/png;base64,{{ logo_base64 }}" 
+                        alt="Logo" 
+                        style="width: 50px; height: auto;">
+                </td>
+
+                <!-- Nome e título -->
+                <td style="width: 33%; text-align: center; border: none; vertical-align: middle;">
+                    <div style="text-align: center;">
+                        <h1 style="margin: 0; font-size: 16px;">MiRoute Tecnologia Ltda</h1>
+                        <h2 style="margin: 0; font-size: 14px; font-weight: normal;">Solicitação de Compra</h2>
+                    </div>
+                </td>
+
+                <!-- Número da solicitação -->
+                <td style="width: 33%; text-align: right; border: none; vertical-align: top;">
+                    <p style="font-size: 22px; font-weight: bold; margin: 0;">
+                        Nº {{ solicitacao.id }}
+                    </p>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+    <!-- Informações -->
+    <p><strong>Solicitante:</strong> {{ solicitacao.solicitante_nome }}</p>
+    <p><strong>Data:</strong> {{ solicitacao.data_solicitacao|date:"d/m/Y" }}</p>
+    <p><strong>Programar Para:</strong> {{ solicitacao.programar_para|date:"d/m/Y" }}</p>
+
+    <!-- Tabela Itens + Cotações -->
+    <h3>Itens e Cotações</h3>
+    <table style="width: 68%; float: left;">
+        <thead>
+            <tr>
+                <th style="width: 5%;">Item</th>
+                <th style="width: 12%;">Aplicação</th>
+                <th style="width: 22%;">Descrição</th>
+                <th style="width: 20%;">Especificação</th>
+                <th style="width: 5%;">Qtd</th>
+                <th style="width: 15%;">Cotação 1 R$</th>
+                <th style="width: 15%;">Cotação 2 R$</th>
+                <th style="width: 15%;">Cotação 3 R$</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in itens %}
+            <tr>
+                <td>{{ item.item|default:"&nbsp;" }}</td>
+                <td>{{ item.aplicacao|default:"&nbsp;" }}</td>
+                <td>{{ item.descricao|default:"&nbsp;" }}</td>
+                <td>{{ item.especificacao|default:"&nbsp;" }}</td>
+                <td style="text-align:center;">{{ item.quantidade|default:"&nbsp;" }}</td>
+                <td>&nbsp;</td> <!-- Cotação 1 -->
+                <td>&nbsp;</td> <!-- Cotação 2 -->
+                <td>&nbsp;</td> <!-- Cotação 3 -->
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8" style="text-align:center;">Nenhum item cadastrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+   <!-- Assinaturas -->
+    <table class="assinaturas">
+        <tr>
+            <td><div class="line"></div>Solicitante</td>
+            <td><div class="line"></div>Compras</td>
+            <td><div class="line"></div>Gerência</td>
+        </tr>
+    </table>
+</body>
+</html>

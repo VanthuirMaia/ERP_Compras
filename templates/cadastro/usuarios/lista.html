@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Usuários</h2>
+  <a href="{% url 'cadastro:criar_usuario' %}" class="btn btn-success mb-3"
+    >Novo Usuário</a
+  >
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Grupo</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in usuarios %}
+      <tr>
+        <td>{{ user.first_name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.groups.first.name }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="3">Nenhum usuário cadastrado.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
