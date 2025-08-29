@@ -3,10 +3,18 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User, Group
 from django.contrib import messages
 from .models import Fornecedor
+from django.contrib.auth.decorators import login_required, user_passes_test
 
-# Exemplo de regra de acesso (pode usar depois em Pedidos/Solicitações)
+# Grupos
+def is_solicitante(user):
+    return user.groups.filter(name="Solicitante").exists() or user.is_superuser
+
 def is_compras(user):
-    return user.groups.filter(name='Compras').exists() or user.is_superuser
+    return user.groups.filter(name="Compras").exists() or user.is_superuser
+
+def is_gerencia(user):
+    return user.groups.filter(name="Gerência").exists() or user.is_superuser
+
 
 
 # =========================
@@ -28,7 +36,8 @@ def detalhar_fornecedor(request, pk):
         "fornecedor": fornecedor
     })
 
-
+@login_required
+@user_passes_test(is_compras, login_url='/sem-permissao/')
 def criar_fornecedor(request):
     if request.method == "POST":
         data = {
@@ -52,7 +61,8 @@ def criar_fornecedor(request):
 
     return render(request, "cadastro/fornecedores/criar.html", {"page_title": "Novo Fornecedor"})
 
-
+@login_required
+@user_passes_test(is_compras, login_url='/sem-permissao/')
 def editar_fornecedor(request, pk):
     fornecedor = get_object_or_404(Fornecedor, pk=pk)
 
@@ -93,7 +103,8 @@ def editar_fornecedor(request, pk):
         "data": data, "fornecedor": fornecedor
     })
 
-
+@login_required
+@user_passes_test(is_compras, login_url='/sem-permissao/')
 def excluir_fornecedor(request, pk):
     fornecedor = get_object_or_404(Fornecedor, pk=pk)
     if request.method == 'POST':

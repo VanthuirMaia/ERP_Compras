@@ -7,7 +7,18 @@ from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 from django.conf import settings
+from django.contrib.auth.decorators import login_required, user_passes_test
 import os, base64
+
+# Grupos
+def is_solicitante(user):
+    return user.groups.filter(name="Solicitante").exists() or user.is_superuser
+
+def is_compras(user):
+    return user.groups.filter(name="Compras").exists() or user.is_superuser
+
+def is_gerencia(user):
+    return user.groups.filter(name="Gerência").exists() or user.is_superuser
 
 def index(request):
     pedidos = Pedido.objects.all().order_by("-id").prefetch_related("itens")
@@ -27,7 +38,8 @@ def index(request):
     }
     return render(request, "pedidos/index.html", context)
 
-
+@login_required
+@user_passes_test(is_compras, login_url='/sem-permissao/')
 def criar_pedido(request, solicitacao_id):
     solicitacao = get_object_or_404(Solicitacao, id=solicitacao_id)
     fornecedores = Fornecedor.objects.all()

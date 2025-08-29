@@ -8,6 +8,18 @@ from django.template.loader import get_template
 from xhtml2pdf import pisa
 import os, base64
 from django.conf import settings
+from django.contrib.auth.decorators import login_required, user_passes_test
+
+# Grupos
+def is_solicitante(user):
+    return user.groups.filter(name="Solicitante").exists() or user.is_superuser
+
+def is_compras(user):
+    return user.groups.filter(name="Compras").exists() or user.is_superuser
+
+def is_gerencia(user):
+    return user.groups.filter(name="Gerência").exists() or user.is_superuser
+
 
 
 def index(request):
@@ -19,6 +31,8 @@ def index(request):
 
 
 # Criar SOLICITAÇÂO
+@login_required
+@user_passes_test(is_solicitante, login_url='/sem-permissao/')
 def criar_solicitacao(request):
     if request.method == 'POST':
         solicitante_nome = request.POST.get('solicitante_nome')
@@ -68,6 +82,8 @@ def detalhar_solicitacao(request, pk):
     })
 
 # Editar SOLICITAÇÂO
+@login_required
+@user_passes_test(is_solicitante, login_url='/sem-permissao/')
 @require_http_methods(["GET", "POST"])
 def editar_solicitacao(request, pk):
     solicitacao = get_object_or_404(Solicitacao, id=pk)
@@ -135,6 +151,8 @@ def editar_solicitacao(request, pk):
 
 
 # Excluir SOLICITAÇÂO
+@login_required
+@user_passes_test(is_solicitante, login_url='/sem-permissao/')
 def excluir_solicitacao(request, pk):
     solicitacao = get_object_or_404(Solicitacao, pk=pk)
     if request.method == 'POST':
