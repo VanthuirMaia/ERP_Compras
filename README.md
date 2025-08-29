@@ -1,4 +1,4 @@
-# 🛒 ERP Compras
+# 🛒 Axio - Gestão de Pedidos
 
 [![Python Version](https://img.shields.io/badge/python-3.12-blue.svg)](https://python.org)
 [![Django Version](https://img.shields.io/badge/django-5.2-green.svg)](https://djangoproject.com)
@@ -22,7 +22,7 @@ Sistema ERP completo para gestão de compras empresariais, desenvolvido para oti
 
 ## 🎯 Visão Geral
 
-O **ERP Compras** é uma solução robusta desenvolvida para empresas que buscam modernizar e otimizar seus processos de compra. O sistema oferece controle completo sobre o ciclo de compras, desde a solicitação inicial até a aprovação final, incluindo gestão de fornecedores e análise de custos.
+O **Axio - Gestão de Pedidos** é uma solução robusta desenvolvida para empresas que buscam modernizar e otimizar seus processos de compra. O sistema oferece controle completo sobre o ciclo de compras, desde a solicitação inicial até a aprovação final, incluindo gestão de fornecedores e análise de custos.
 
 ### Principais Benefícios
 
@@ -61,9 +61,11 @@ O **ERP Compras** é uma solução robusta desenvolvida para empresas que buscam
 ### 📅 **Planejadas**
 
 - **Gestão de Fornecedores**
+
   - Cadastro completo
   - Avaliação de performance
   - Histórico de transações
+
 - **Centros de Custo**
 
   - Controle orçamentário
@@ -261,7 +263,10 @@ of this software and associated documentation files (the "Software")...
 
 ## 📞 Contato
 
-**Vanthuir Maia**
+**Gestto – Softwares de Gestão**  
+🚀 Transformando processos em resultados
+
+**_Vanthuir Maia_**
 
 - 📱 **WhatsApp:** [+55 87 99607 5897](https://wa.me/5587996075897)
 - 📧 **Email:** [vanmaiasf@gmail.com](mailto:vanmaiasf@gmail.com)
